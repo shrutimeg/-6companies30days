@@ -1,0 +1,22 @@
+class Solution {
+    public int findIntegers(int n) {
+        StringBuilder sb = new StringBuilder(Integer.toBinaryString(n)).reverse();
+        int m = sb.length();
+        
+        int a[] = new int[m];
+        int b[] = new int[m];
+        a[0] = b[0] = 1;
+        for (int i = 1; i < m; i++) {
+            a[i] = a[i - 1] + b[i - 1];
+            b[i] = a[i - 1];
+        }
+        
+        int result = a[m - 1] + b[m - 1];
+        for (int i = m - 2; i >= 0; i--) {
+            if (sb.charAt(i) == '1' && sb.charAt(i + 1) == '1') break;
+            if (sb.charAt(i) == '0' && sb.charAt(i + 1) == '0') result -= b[i];
+        }
+        
+        return result; 
+    }
+}
