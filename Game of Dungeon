@@ -1,0 +1,46 @@
+class Solution {
+    public int calculateMinimumHP(int[][] dungeon) {
+        int health[][] = new int[dungeon.length][dungeon[0].length];
+    int targethealth=1;
+    for(int i=dungeon.length-1;i>=0;i--){
+        for(int j=dungeon[0].length-1;j>=0;j--){
+            
+            if(i==dungeon.length-1 && j==dungeon[0].length-1){
+                targethealth=targethealth-dungeon[i][j];
+                if(targethealth<=0)
+                    health[i][j]=1;
+                else
+                    health[i][j]=targethealth;
+            }
+            
+            else if(i==dungeon.length-1){
+                targethealth=health[i][j+1]-dungeon[i][j];
+                if(targethealth<=0)
+                    health[i][j]=1;
+                else
+                    health[i][j]=targethealth;
+            }
+            else if(j==dungeon[0].length-1){
+                targethealth=health[i+1][j]-dungeon[i][j];
+                if(targethealth<=0)
+                    health[i][j]=1;
+                else
+                    health[i][j]=targethealth;
+            }
+            else
+            {
+                
+                targethealth = Math.min(health[i+1][j]-dungeon[i][j],
+                                  health[i][j+1]-dungeon[i][j]);
+                if(targethealth<=0)
+                    health[i][j]=1;
+                else
+                    health[i][j]=targethealth;
+            }
+                
+        }
+    }
+    
+    return health[0][0]; 
+    }
+}
