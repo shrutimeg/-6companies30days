@@ -1,0 +1,51 @@
+class StockPrice {
+ Map<Integer, Integer> map;
+            TreeMap<Integer, Integer> tmap;
+            int cur = -1;
+    public StockPrice() {
+         map = new HashMap<>();
+                tmap = new TreeMap<>();
+            }
+            
+         
+    
+    public void update(int timestamp, int price) {
+         if (!map.containsKey(timestamp)) {
+                    tmap.put(price, tmap.getOrDefault(price, 0) + 1);
+                } else {
+                    int prev = map.get(timestamp);
+                    tmap.put(prev, tmap.get(prev) - 1);
+                    if (tmap.get(prev) <= 0) tmap.remove(prev);
+                    tmap.put(price, tmap.getOrDefault(price, 0) + 1);
+
+                }
+                cur = Math.max(cur, timestamp);
+                map.put(timestamp, price);
+            }
+    
+    
+    public int current() {
+                      return map.containsKey(cur) ? map.get(cur) : -1;
+  
+    }
+    
+    public int maximum() {
+                        return tmap.isEmpty() ? -1 : tmap.lastKey();
+
+    }
+    
+    public int minimum() {
+                      return tmap.isEmpty() ? -1 : tmap.firstKey();
+  
+    }
+}
+
+/**
+ * Your StockPrice object will be instantiated and called as such:
+ * StockPrice obj = new StockPrice();
+ * obj.update(timestamp,price);
+ * int param_2 = obj.current();
+ * int param_3 = obj.maximum();
+ * int param_4 = obj.minimum();
+ */ 
+
