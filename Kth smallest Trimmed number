@@ -1,0 +1,25 @@
+        int d = nums[0].length();
+        int n = nums.length;
+        char[][] chars = new char[n][d];
+        for (int i = 0; i < n; i++) chars[i] = nums[i].toCharArray();
+        List<Integer>[] radix = new List[10];
+        int[][] sort = new int[d+1][n];
+        for (int i = 0; i < n; i++) sort[0][i] = i;
+        
+        for (int i = 1; i <= d; i++) {
+            int c = d-i;
+            Arrays.fill(radix, null);
+            for (int j = 0; j < n; j++) {
+                int idx = sort[i-1][j];
+                int key = chars[idx][c]-'0';
+                if (radix[key] == null) radix[key] = new ArrayList<>();
+                radix[key].add(idx);
+            }
+            int o = 0;
+            for (int j = 0; j < 10; j++) if (radix[j] != null) for (int k = 0; k < radix[j].size(); k++) sort[i][o++] = radix[j].get(k);
+        }
+        
+        int[] result = new int[queries.length];
+        for (int i = 0; i < queries.length; i++) result[i] = sort[queries[i][1]][queries[i][0]-1];
+        
+        return result;
