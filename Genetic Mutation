@@ -1,0 +1,47 @@
+class Solution {
+    public int minMutation(String startGene, String endGene, String[] bank) {
+  
+        
+        Queue<String> q = new LinkedList<>(); // for standard BFS
+        
+        Set<String> vis = new HashSet<>(); // if a string as a node is visited or not
+        
+        q.add(startGene);
+        vis.add(startGene); // init cond
+        
+        int steps = 0;
+        
+        while(!q.isEmpty())
+        {
+            int size = q.size();
+            for(int j=0;j<size;j++)
+            {
+                // base cond
+                
+                String node = q.remove();
+                if(node.equals(endGene)) // if start equals to end simply returning the total steps involved hypothetically
+                {
+                    return steps;
+                }
+                
+                for(char ch : new char[]{'A','C','G','T'})
+                {
+                    for(int i=0;i<node.length();i++)
+                    {
+                        String neighbour = node.substring(0,i) + ch + node.substring(i+1); // take out pen and paper and try it
+                        if(!vis.contains(neighbour) && Arrays.asList(bank).contains(neighbour))
+                        {
+                            // only if the neighbour not visited before and contains in bank we will add to queue and make it visited and this is what bfs says
+                            
+                            q.add(neighbour);
+                            vis.add(neighbour);
+                            
+                        }
+                    }
+                }
+            }
+            steps++;
+        }
+        return -1;
+    }
+}
