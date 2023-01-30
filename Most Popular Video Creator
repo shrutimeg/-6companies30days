@@ -1,0 +1,47 @@
+class Solution {
+    public List<List<String>> mostPopularCreator(String[] creators, String[] ids, int[] views) {
+         HashMap<String, Integer> h = new HashMap<>();
+
+        for (int i = 0; i < creators.length; i++) {
+            h.put(creators[i], h.getOrDefault(creators[i], 0) + views[i]);
+        }
+        HashMap<String, String> h1 = new HashMap<>();
+        HashMap<String, Integer> h2 = new HashMap<>();
+        for (int i = 0; i < creators.length; i++) {
+            if (!h1.containsKey(creators[i])) {
+                h1.put(creators[i], ids[i]);
+                h2.put(creators[i], views[i]);
+            } else {
+                if (views[i] == h2.get(creators[i])) {
+                    int j = ids[i].compareTo(h1.get(creators[i]));
+                    if (j < 0) {
+                        h1.put(creators[i], ids[i]);
+                    }
+                } else if (views[i] > h2.get(creators[i])) {
+                    h1.put(creators[i], ids[i]);
+                    h2.put(creators[i], views[i]);
+                }
+            }
+        }
+        List<List<String>> l = new ArrayList<List<String>>();
+
+        int max = 0;
+        for (int i = 0; i < h.size(); i++) {
+            max = Math.max(h.get(creators[i]), max);
+        }
+        int size = h.size();
+        for (int i = 0; i < size; i++) {
+            if (h.get(creators[i]) == null) {
+                break;
+            }
+            if (h.get(creators[i]) == max) {
+                l.add(new ArrayList<>());
+                l.get(l.size() - 1).add(creators[i]);
+                l.get(l.size() - 1).add(h1.get(creators[i]));
+                h.remove(creators[i]);
+            }
+        }
+
+        return l;
+    }
+}
